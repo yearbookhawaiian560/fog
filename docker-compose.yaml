@@ -1,0 +1,79 @@
+services:
+  #--------------------------------------------------
+  # Fog dev service
+  #--------------------------------------------------
+
+  # dev: &dev
+  #   build:
+  #     context: .
+  #     target: build_base
+  #   env_file:
+  #     - ./.env.local
+  #   ports:
+  #     - "${HTTP_SERVER_PORT_HOST:-7777}:${HTTP_SERVER_PORT_CONTAINER:-7777}"
+  #   restart: "no"
+  #   environment:
+  #     ENV: "local"
+  #   depends_on:
+  #     postgres:
+  #       condition: service_healthy
+  #     #redis:
+  #     #   condition: service_healthy
+  #     # ollama:
+  #     #   condition: service_started
+  #   volumes:
+  #     - ".:/app"
+  #   command: bash -c "cd /app && go run main.go ${CMD_ARGS}"
+  #   networks:
+  #     - fog-net
+
+  #--------------------------------------------------
+  # Third-Party services
+  #--------------------------------------------------
+  postgres:
+    image: pgvector/pgvector:pg17
+    ports:
+      - "${POSTGRES_PORT:-5432}:5432"
+    env_file:
+      - ./.env.local
+    environment:
+      PGDATA: /var/lib/postgresql/data/pgdata
+      POSTGRES_HOST_AUTH_METHOD: trust
+    volumes:
+      - ./scripts:/opt
+      - ./backups:/backups
+    healthcheck:
+      test: ["CMD", "pg_isready -d fog-db -U fog-user"]
+      interval: 30s
+      timeout: 30s
+      retries: 3
+    networks:
+      - fog-net
+
+  # redis:
+  #   image: redis:7
+  #   ports:
+  #     - "${REDIS_HOST_PORT:-6379}:6379"
+  #   healthcheck:
+  #     test: ["CMD", "redis-cli", "ping"]
+  #     interval: 30s
+  #     timeout: 30s
+  #     retries: 3
+  #   networks:
+  #     - fog-net
+
+  # ollama:
+  #   image: ollama/ollama
+  #   container_name: ollama
+  #   ports:
+  #     - "11434:11434"
+  #   volumes:
+  #     - ${HOME}/.ollama:/root/.ollama
+  #   command: ollama run gpt-oss:20b
+  #   networks:
+  #     - fog-net
+  #   restart: unless-stopped
+
+networks:
+  fog-net:
+    driver: bridge

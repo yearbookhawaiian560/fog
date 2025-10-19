@@ -1,0 +1,47 @@
+[
+  {
+    "Name": "getWeather",
+    "Description": "get the weather for a given city",
+    "JS": "function getWeather(city) { return { city: city, temp: 70, condition: \"sunny\" }; }"
+  },
+  {
+    "Name": "__store__",
+    "Description": "store a value in a variable",
+    "JS": "function __store__(key, value) { G[key] = value; }"
+  },
+  {
+    "Name": "__add__",
+    "Description": "add two numbers together",
+    "JS": "function __add__(a, b) { return a + b; }"
+  },
+  {
+    "Name": "__multiply__",
+    "Description": "multiply two numbers together",
+    "JS": "function __multiply__(a, b) { return a * b; }"
+  },
+  {
+    "Name": "__fetchHTTP__",
+    "Description": "fetch the contents of a URL over HTTP",
+    "JS": "async function __fetchHTTP__(url) { const res = await fetch(url); return await res.text(); }"
+  },
+  {
+    "Name": "__getUserAge__",
+    "Description": "get the age of a user",
+    "JS": "function __getUserAge__(user) { return 30; }"
+  },
+  {
+    "Name": "__getSecretValue__",
+    "Description": "get a secret value from the vault",
+    "JS": "function __getSecretValue__(key) { return \"123xyz\"; }"
+  },
+  {
+    "Name": "__now__",
+    "Description": "get the current date and time",
+    "JS": "function __now__() { return new Date(); }"
+  },
+  {
+    "Name": "__getCurrentCity__",
+    "Description": "get current location coordinates",
+    "JS": "function __getCurrentCity__() { return \"Tokyo\"; }"
+  }
+]
